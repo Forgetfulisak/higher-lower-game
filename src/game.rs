@@ -38,7 +38,7 @@ impl<Status> Game<Status> {
     let locs: Vec<Location> = locs.into_iter().filter(|l| l.count > 100).collect();
 
     Game {
-      status: PhantomData::<Inactive>,
+      status: PhantomData,
       max_score: 0,
       cur_score: 0,
       cur: 0,

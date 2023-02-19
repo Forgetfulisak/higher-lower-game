@@ -92,90 +92,61 @@ fn view_start_game(_model: &Model) -> Node<Msg> {
 }
 
 fn view_run_game(_model: &Model, game: Game<Active>) -> Node<Msg> {
-  div![
-    style! {
-      St::Display => "flex",
-      St::AlignItems => "center",
-      St::JustifyContent => "center",
-    },
+  div![div![
+    h2!["Over-Under: Hvilket stedsnavn er mest populært?"],
+    h4!["Maks score: ", game.max_score, " score: ", game.cur_score],
     div![
-      style! {
-        St::Display => "flex",
-        St::AlignItems => "center",
-        St::JustifyContent => "center",
-        St::FlexDirection => "column",
-      },
-      h2!["Over-Under: Hvilket stedsnavn er mest populært?"],
-      p!["Maks score: ", game.max_score, " score: ", game.cur_score],
+      div![p![format!(
+        "{:?} finnes {} steder",
+        game.get_cur_loc().name,
+        game.get_cur_loc().count,
+      )],],
       div![
-        style! {
-          St::Display => "flex",
-          St::FlexDirection => "row",
-          // St::Padding => "20px",
-          // St::Margin => "10px"
-        },
-        div![
+        p![
+          format!("{:?} er ", game.get_next_loc().name),
           style! {
-            St::PaddingRight => "20px",
-            St::Margin => "10px"
+            St::Display => "inline"
           },
-          p![format!(
-            "{} steder heter {:?}",
-            game.get_cur_loc().count,
-            game.get_cur_loc().name,
-          )],
         ],
-        div![
+        button![
+          "Mer",
+          ev(Ev::Click, |_| Msg::Guess(Comparison::Lower)),
           style! {
-            // St::Padding => "20px",
-            // St::Margin => "10px"
+            St::Display => "inline"
           },
-          p![
-            format!("{:?} er", game.get_next_loc().name),
-            // style! {
-            //   St::Display => "inline"
-            // },
-          ],
-          button![
-            "Mer",
-            ev(Ev::Click, |_| Msg::Guess(Comparison::Higher)),
-            // style! {
-            //   St::Display => "inline"
-            // },
-          ],
-          button![
-            "Mindre",
-            ev(Ev::Click, |_| Msg::Guess(Comparison::Lower)),
-            style! {
-              St::Display => "inline"
-            },
-          ],
-          p![
-            format!(" Populært"),
-            // style! {
-            //   St::Display => "inline"
-            // },
-          ],
-        ]
+        ],
+        button![
+          "Mindre",
+          ev(Ev::Click, |_| Msg::Guess(Comparison::Higher)),
+          style! {
+            St::Display => "inline"
+          },
+        ],
+        p![
+          format!(" Populært"),
+          style! {
+            St::Display => "inline"
+          },
+        ],
       ]
     ]
-  ]
+  ]]
 }
 
 fn view_end_game(_model: &Model, game: Game<Done>) -> Node<Msg> {
   div![
     h1!["Over-Under: Hvilket stedsnavn er mest populært?"],
-    p!["Maks score: ", game.max_score, " score: ", game.cur_score],
-    p![format!(
-      "Navn: {}, Antall: {}",
+    h4!["Maks score: ", game.max_score, " score: ", game.cur_score],
+    div![p![format!(
+      "{:?} finnes {} steder",
       game.get_cur_loc().name,
-      game.get_cur_loc().count
-    )],
-    p![format!(
-      "Navn: {}, Antall: {}",
+      game.get_cur_loc().count,
+    )],],
+    div![p![format!(
+      "{:?} finnes {} steder",
       game.get_next_loc().name,
-      game.get_next_loc().count
-    )],
+      game.get_next_loc().count,
+    )],],
     button!["Restart", ev(Ev::Click, |_| Msg::StartGame)],
   ]
 }
