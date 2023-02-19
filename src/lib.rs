@@ -93,22 +93,78 @@ fn view_start_game(_model: &Model) -> Node<Msg> {
 
 fn view_run_game(_model: &Model, game: Game<Active>) -> Node<Msg> {
   div![
-    h2!["Over-Under: Hvilket stedsnavn er mest populært?"],
-    p!["Maks score: ", game.max_score, " score: ", game.cur_score],
-    p![format!(
-      "Navn: {:?}, Antall: {}",
-      game.get_cur_loc().name,
-      game.get_cur_loc().count
-    )],
-    button!["Over", ev(Ev::Click, |_| Msg::Guess(Comparison::Higher)),],
-    button!["under", ev(Ev::Click, |_| Msg::Guess(Comparison::Lower)),],
-    p![format!("Navn: {:?}", game.get_next_loc().name)],
+    style! {
+      St::Display => "flex",
+      St::AlignItems => "center",
+      St::JustifyContent => "center",
+    },
+    div![
+      style! {
+        St::Display => "flex",
+        St::AlignItems => "center",
+        St::JustifyContent => "center",
+        St::FlexDirection => "column",
+      },
+      h2!["Over-Under: Hvilket stedsnavn er mest populært?"],
+      p!["Maks score: ", game.max_score, " score: ", game.cur_score],
+      div![
+        style! {
+          St::Display => "flex",
+          St::FlexDirection => "row",
+          // St::Padding => "20px",
+          // St::Margin => "10px"
+        },
+        div![
+          style! {
+            St::PaddingRight => "20px",
+            St::Margin => "10px"
+          },
+          p![format!(
+            "{} steder heter {:?}",
+            game.get_cur_loc().count,
+            game.get_cur_loc().name,
+          )],
+        ],
+        div![
+          style! {
+            // St::Padding => "20px",
+            // St::Margin => "10px"
+          },
+          p![
+            format!("{:?} er", game.get_next_loc().name),
+            // style! {
+            //   St::Display => "inline"
+            // },
+          ],
+          button![
+            "Mer",
+            ev(Ev::Click, |_| Msg::Guess(Comparison::Higher)),
+            // style! {
+            //   St::Display => "inline"
+            // },
+          ],
+          button![
+            "Mindre",
+            ev(Ev::Click, |_| Msg::Guess(Comparison::Lower)),
+            style! {
+              St::Display => "inline"
+            },
+          ],
+          p![
+            format!(" Populært"),
+            // style! {
+            //   St::Display => "inline"
+            // },
+          ],
+        ]
+      ]
+    ]
   ]
 }
 
 fn view_end_game(_model: &Model, game: Game<Done>) -> Node<Msg> {
   div![
-    h1!["Over-Under. Hvilket stedsnavn er mest populært?"],
+    h1!["Over-Under: Hvilket stedsnavn er mest populært?"],
     p!["Maks score: ", game.max_score, " score: ", game.cur_score],
     p![format!(
       "Navn: {}, Antall: {}",
